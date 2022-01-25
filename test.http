@@ -1,0 +1,18 @@
+POST http://localhost:3000/users/login
+content-type: application/json
+
+{
+    "username": "Test 3"
+}
+
+###
+
+GET http://localhost:3000/users/
+
+###
+GET http://localhost:3000/users/user
+content-type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc3QgMiIsImlhdCI6MTY0MzEwNjM5OCwiZXhwIjoxNjQzMTA2NDU4fQ.2sNvQ8yW9OK8rVmmizUecji_3VDkCZbLk55SXgEe9uI"
+}
