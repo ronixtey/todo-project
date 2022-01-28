@@ -1,4 +1,6 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { CreateTodoDto } from "./dto/create-todo.dto";
+import { Todo } from "./todo.entity";
 
 import { TodoService } from "./todo.service";
 
@@ -7,30 +9,27 @@ export class TodoController {
     constructor(private readonly todoservice: TodoService) { }
 
     @Post()
-    addTask(@Body('title') taskTitle: string) {
-        const todoId = this.todoservice.insertTask(taskTitle);
-        return { id: todoId }
+    async create(@Body() createTodoDto: CreateTodoDto): Promise<Todo> {
+        return this.todoservice.create(createTodoDto);
     }
 
     @Get()
-    getTasks() {   
-        return this.todoservice.getTasks();
+    findAll(): Promise<Todo[]> {
+        return this.todoservice.findAll();
     }
 
     @Get(':id')
-    getTask(@Param('id') taskId: number) {
-        return this.todoservice.getTask(taskId);
+    findOne(@Param('id') id: number): Promise<Todo> {
+        return this.todoservice.findOne(id);
     }
 
-    @Post(':id/done') 
-    closeTask(@Param('id') taskId: number) {
-        this.todoservice.closeTask(taskId);
+    @Post(':id/done')
+    close(@Param('id') id: number) {
+        return this.todoservice.close(id);
     }
 
-    @Post(':id/status') 
-    switchTask(@Param('id') taskId: number) {
-        this.todoservice.switchTask(taskId);
+    @Post(':id/status')
+    switchStatus(@Param('id') id: number) {
+        return this.todoservice.switchStatus(id);
     }
 }
-
-

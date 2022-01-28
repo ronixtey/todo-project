@@ -1,50 +1,66 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { TodoUser } from './users.model';
-
-// export type User = any;
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateUserDto } from './dto/create-user.tdo';
+import { User } from './user.entitiy';
 
 @Injectable()
 export class UsersService {
-    constructor(private jwtService: JwtService) { }
+    constructor(
+        @InjectRepository(User)
+        private userRepository: Repository<User>,
+        private jwtService: JwtService
+    ) { }
 
-    private readonly users: TodoUser[] = [];
+    create(createUserDto: CreateUserDto): Promise<User> {
+        const user = new User();
+        user.username = createUserDto.userName;
+        user.password = createUserDto.password;
+
+        return this.userRepository.save(user);
+    }
+
+    findAll(): Promise<User[]> {
+        return this.userRepository.find();
+    }
+
+    async findOne(id: number): Promise<User> {
+        const user = await this.userRepository.findOne(id);
+        console.log(user);
+
+        if (!user) {
+            throw new NotFoundException(`User with id ${id} does not exist`);
+        }
+
+        return user;
+    }
+
+
+    /* 
 
     addUser(userName: string) {
         const payload = { username: userName };
-        const token = this.jwtService.sign(payload);
+        const token = this.jwtSerimport { Module } from "@nestjs/common";
+import { InjectRepository, TypeOrmModule } from "@nestjs/typeorm";
+import { User } from "src/users/user.entitiy";
+import { UsersModule } from "src/users/users.module";
+import { UsersService } from "src/users/users.service";
+import { Repository } from "typeorm";
+import { TodoController } from "./todo.controller";
+import { Todo } from "./todo.entity";
+import { TodoService } from "./todo.service";
 
+@Module({vice.sign(payload);
         
         this.users.push(new TodoUser(userName, token));
 
         return token;
     }
 
-    getUsers() {
-        return [... this.users];
-    }
 
     getUser(token: string) {
         const user = this.users.find(user => user.token === token);
         return {... user};
-    }
-
-
-
-    /* private readonly users = [
-        {
-            userId: 1,
-            username: 'john',
-            password: 'changeme',
-        },
-        {
-            userId: 2,
-            username: 'maria',
-            password: 'guess',
-        },
-    ]; */
-
-    /* async findOne(username: string): Promise<User | undefined> {
-        return this.users.find(user => user.username === username);
     } */
 }
