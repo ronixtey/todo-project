@@ -8,13 +8,13 @@ import { TodoService } from "./todo.service";
 @UseGuards(JwtAuthGuard)
 @ApiTags('todo')
 @ApiBearerAuth()
+@ApiUnauthorizedResponse({ description: 'Unauthorized' })
 @Controller('todo')
 export class TodoController {
     constructor(private readonly todoservice: TodoService) { }
 
     @Post()
     @ApiCreatedResponse({ description: 'Create new todo item' })
-    @ApiUnauthorizedResponse({ description: 'Unauthorized' })
     @ApiBody({ type: CreateTodoDto })
     async create(@Request() req, @Body() createTodoDto: CreateTodoDto): Promise<Todo> {
         // req - jwt token, that contains info about authorized user
@@ -23,7 +23,6 @@ export class TodoController {
 
 
     @Get()
-    @ApiUnauthorizedResponse({ description: 'Unauthorized' })
     @ApiNotFoundResponse({ description: 'User does not have any todo item' })
     @ApiOkResponse({ description: 'List all current user\'s todo lists' })
     findAll(@Request() req): Promise<Todo[]> {
@@ -32,7 +31,6 @@ export class TodoController {
 
 
     @Get(':id')
-    @ApiUnauthorizedResponse({ description: 'Unauthorized' })
     @ApiNotFoundResponse({ description: 'User does not have todo item with specified id' })
     @ApiOkResponse({ description: 'List current user\'s todo list by id' })
     findOne(@Param('id') id: number, @Request() req): Promise<Todo> {
@@ -41,7 +39,6 @@ export class TodoController {
 
 
     @Post(':id/done')
-    @ApiUnauthorizedResponse({ description: 'Unauthorized' })
     @ApiNotFoundResponse({ description: 'User does not have todo item with specified id' })
     @ApiCreatedResponse({ description: 'Close todo item' })
     close(@Param('id') id: number, @Request() req) {
@@ -50,7 +47,6 @@ export class TodoController {
 
 
     @Post(':id/status')
-    @ApiUnauthorizedResponse({ description: 'Unauthorized' })
     @ApiNotFoundResponse({ description: 'User does not have todo item with specified id' })
     @ApiCreatedResponse({ description: 'Switch status of the todo item' })
     switchStatus(@Param('id') id: number, @Request() req) {

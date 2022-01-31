@@ -10,9 +10,6 @@ async function bootstrap() {
     .setDescription('Todo list API')
     .setVersion('1.0')
     .addBearerAuth()
-      //   { type: 'http', scheme: 'bearer', bearerFormat: 'Bearer' },
-      // 'access-token'
-    // )
     .addTag('todo')
     .build();
   const document = SwaggerModule.createDocument(app, config);
@@ -21,9 +18,7 @@ async function bootstrap() {
   await app.listen(3000);
 }
 
-
 // Swagger
 // localhost:3000/api
-
 
 bootstrap();

@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiCreatedResponse, ApiHeader, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/guards/local-auth.guards';
@@ -10,8 +10,8 @@ import { CreateUserDto } from './users/dto/create-user.tdo';
 export class AppController {
   constructor(private readonly authService: AuthService) { }
 
-  @UseGuards(LocalAuthGuard)
   @Post('login')
+  @UseGuards(LocalAuthGuard)
   @ApiCreatedResponse({ description: 'User login and get jwt token' })
   @ApiUnauthorizedResponse({ description: 'Invalid credentials' })
   @ApiBody({ type: CreateUserDto })
@@ -19,11 +19,11 @@ export class AppController {
     return this.authService.login(req.user);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @ApiOkResponse({description: 'Get profile'})
-  @ApiUnauthorizedResponse({description: 'Invalid JWT token'})
-  @ApiHeader({name: 'Token', description: 'JWT Token'})
   @Get('user')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({description: 'Invalid JWT token'})
+  @ApiOkResponse({description: 'Get profile'})
   getProfile(@Request() req) {
     return req.user;
   }
