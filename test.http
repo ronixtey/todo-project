@@ -4,7 +4,7 @@ content-type: application/json
 
 {
     "username": "Tester",
-    "password": "123"
+    "password": "123"   
 }
 
 ###
@@ -31,7 +31,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc
 
 ### TODO
 POST http://localhost:3000/todo
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc3RlciIsInN1YiI6MSwiaWF0IjoxNjQzNjIyMzIzLCJleHAiOjE2NDM2MjI5MjN9.xkw1Lqmx2qRTpJaK0n1GEV8k73lAdJVplzta3la8I0s
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc3RlciIsInN1YiI6MSwiaWF0IjoxNjQzNjI1OTI4LCJleHAiOjE2NDM2MjY1Mjh9.45otqIJWOURpSatxx_9Y8qiu3ThGecIf6RyASrzyDOc
 content-type: application/json
 
 {
