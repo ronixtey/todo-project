@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import { TodoModule } from './todo/todo.module';
 import { UsersModule } from './users/users.module';
-import { UsersService } from './users/users.service';
 
 
 @Module({
@@ -22,6 +22,7 @@ import { UsersService } from './users/users.service';
     }),
     TodoModule,
     UsersModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

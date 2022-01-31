@@ -7,7 +7,7 @@ import { UsersService } from "./users.service";
 export class UsersController {
     constructor(private readonly usersService: UsersService) { }
 
-    @Post('login')
+    @Post('create')
     create(@Body() createUserDto: CreateUserDto): Promise<User> {
         return this.usersService.create(createUserDto);
     }
@@ -21,6 +21,8 @@ export class UsersController {
     findOne(@Param('id') id: number): Promise<User> {
         return this.usersService.findOne(id);
     }
+    
+    
     /* findOne(@Body('token') token): Promise<User> {
         return this.usersService.findOne(token);
     } */

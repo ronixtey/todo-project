@@ -5,41 +5,45 @@ import { UsersService } from "src/users/users.service";
 
 @Injectable()
 export class TodoService {
-    constructor(private usersService: UsersService) { }
+    constructor(
+        private usersService: UsersService
+    ) { }
 
-    async create(createTodoDto: CreateTodoDto): Promise<Todo> {
+    async create(userId: number, createTodoDto: CreateTodoDto): Promise<Todo> {
         const todo = new Todo();
         todo.name = createTodoDto.name;
-        todo.user = await this.usersService.findOne(createTodoDto.userId);
+        // assign current authorized user
+        todo.user = await this.usersService.findOne(userId);
 
         return Todo.save(todo);
     }
 
-    findAll(): Promise<Todo[]> {
-        return Todo.find();
+    findAll(userId: number): Promise<Todo[]> {
+        return Todo.find({
+            where: { user: userId }
+        });
     }
 
-    findOne(id: number): Promise<Todo> {
-        return this.getTask(id);
+    findOne(id: number, userId: number): Promise<Todo> {
+        return this.getTask(id, userId);
     }
 
-    async close(id: number) {
-        const todo = await this.getTask(id);
+    async close(id: number, userId: number) {
+        const todo = await this.getTask(id, userId);
         todo.isCompleted = true;
 
         return Todo.save(todo);
     }
 
-    async switchStatus(id: number) {
-        const todo = await this.getTask(id);
+    async switchStatus(id: number, userId: number) {
+        const todo = await this.getTask(id, userId);
         todo.isCompleted = !todo.isCompleted;
 
         return Todo.save(todo);
     }
 
-
-    private async getTask(id: number) {
-        const todo = await Todo.findOne(id, { relations: ['user'] });
+    private async getTask(id: number, userId: number) {
+        const todo = await Todo.findOne({ where: { id: id, user: userId } }/* , { relations: ['user'] } */);
         if (!todo) {
             throw new NotFoundException();
         }
