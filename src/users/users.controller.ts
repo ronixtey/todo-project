@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
-import { ApiBody, ApiCreatedResponse } from "@nestjs/swagger";
+import { Body, Controller, Post } from "@nestjs/common";
+import { ApiBody, ApiCreatedResponse, ApiTags } from "@nestjs/swagger";
 import { CreateUserDto } from "./dto/create-user.tdo";
 import { User } from "./user.entitiy";
 import { UsersService } from "./users.service";
@@ -9,6 +9,7 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) { }
 
     @Post('create')
+    @ApiTags('user')
     @ApiCreatedResponse({ description: 'User registration' })
     @ApiBody({type: CreateUserDto}) 
     create(@Body() createUserDto: CreateUserDto): Promise<User> {
