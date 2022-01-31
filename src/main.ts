@@ -18,4 +18,8 @@ async function bootstrap() {
 }
 
 
+// Swagger
+// localhost:3000/api
+
+
 bootstrap();
